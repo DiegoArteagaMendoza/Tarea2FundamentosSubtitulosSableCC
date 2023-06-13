@@ -30,41 +30,49 @@ Helpers
   num=['0' .. '9']+;
   letter=['a'..'z']|['A'..'Z'];
   digit = ['0'..'9'] ;
-  text = [[0..0xffff]-newline]*;
-
+  newline= (13 | 10)+;
+  text = [0..0xffff]*;
 
 Tokens
 	num= num;
+	newline= newline;
 	blank = (' ')+;
-        newline= (13 | 10)+;
         arrow = '-''-''>';
         comma= ',';
         twopoint= ':';
         digit= digit;
         text= text;
+	plus= '<';
+	slash= '/';
+	minus= '>';
 
+Ignored Tokens
+	newline, blank;
 
 Productions
 	filesub = itemlist;
 
 	itemlist = {item} item |
-		   {itemlist} itemlist newline item;
+		   {itemlist} itemlist item;
 
-        item = num blank newline time blank newline sub;
+        item = num time subs;
                
-        time = hours twopoint minutes twopoint seconds comma millisecons arrow hours twopoint minutes twopoint seconds comma millisecons;
+        time = [h1]:hours [t1]:twopoint [m1]:minutes [t2]:twopoint [s1]:seconds [c1]:comma [x1]:millisecons arrow [h2]:hours [t3]:twopoint [m2]:minutes [t4]:twopoint [s2]:seconds [c2]:comma [x2]:millisecons;
         
-        subs = textlist;
+        subs = {textlist} textlist |
+	       {effect} [e1]:effect textlist [e2]:effect;
 
-        textlist= text |
-                  textlist newline text;
+        textlist= {text} text |
+                  {textlist} textlist text;
 
-        
-        hours= digit digit;
+        effect= {text} plus text minus |
+		{slash} plus slash text minus;
 
-        minutes= digit digit;
+        hours= [d1]:digit [d2]:digit;
 
-        seconds= digit digit;
+        minutes= [d3]:digit [d4]:digit;
 
-        millisecons= digit digit;
+        seconds= [d5]:digit [d6]:digit;
+
+        millisecons= [d7]: digit [d8]:digit;
 
