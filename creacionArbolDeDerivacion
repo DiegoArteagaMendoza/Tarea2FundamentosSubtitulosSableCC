@@ -1,0 +1,15 @@
+try {
+            Parser p = new Parser(new Lexer(new PushbackReader(new FileReader("agregar ruta de archivo"))));
+
+            Start tree = p.parse();
+
+            Visitador vis = new Visitador();
+
+            tree.apply(vis);
+
+            for (String n:vis.getNodos()){
+                System.out.println(n);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
