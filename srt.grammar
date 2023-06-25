@@ -1,53 +1,29 @@
-Package srt;
+Package subtitulo;
 
 Helpers
-  a = 'a' | 'A' ; 
-  b = 'b' | 'B' ;  
-  c = 'c' | 'C' ; 
-  d = 'd' | 'D' ;
-  e = 'e' | 'E' ;
-  f = 'f' | 'F' ;
-  g = 'g' | 'g' ;
-  h = 'h' | 'H' ;
-  i = 'i' | 'I' ;
-  j = 'j' | 'J' ;
-  k = 'k' | 'K' ;
-  l = 'l' | 'L' ;
-  m = 'm' | 'M' ;
-  n = 'n' | 'N' ;
-  o = 'o' | 'O' ;
-  p = 'p' | 'P' ;
-  q = 'q' | 'Q' ;
-  r = 'r' | 'R' ;
-  s = 's' | 'S' ;
-  t = 't' | 'T' ;
-  u = 'u' | 'U' ;
-  v = 'v' | 'V' ;
-  w = 'w' | 'W' ;
-  x = 'x' | 'X' ;
-  y = 'y' | 'Y' ;   
-  z = 'z' | 'Z' ;
-  num=['0' .. '9']+;
-  letter=['a'..'z']|['A'..'Z'];
-  digit = ['0'..'9'] ;
-  newline= (13 | 10)+;
-  text = [0..0xffff]*;
+  digit = ['0' .. '9'];
+  letter = [['a' .. 'z'] + ['A' .. 'Z']];
+  tilde = ('á' | 'é' | 'í' | 'ó' | 'ú' | 'Á' | 'É' | 'Í' | 'Ó' | 'Ú');
+  symbols = [['!' .. '.'] + [':' .. ';']];
+  para = (letter | 'Ñ' | 'ñ' | '¿' | '¡' | '-' | '_' | '"');
+  coloring = [['a' .. 'f'] + ['A' .. 'F']];
+  
 
 Tokens
-	num= num;
-	newline= newline;
-	blank = (' ')+;
+	digit = (digit)+;
+	blank = (' ' | 13 | 10)+;
         arrow = '-''-''>';
         comma= ',';
         twopoint= ':';
-        digit= digit;
-        text= text;
-	plus= '<';
-	slash= '/';
-	minus= '>';
+        color = (digit | coloring)+;
+        text= para (digit | tilde | para | symbols | ' ' | '?' | '¿' )*;
+	open= '<font color="#';
+	close= '</font>';
+	end= '">';
+	font = ('<i>' | '<b>' | '<u>' | '</i>' | '</b>' | '</u>');
 
 Ignored Tokens
-	newline, blank;
+	blank;
 
 Productions
 	filesub = itemlist;
@@ -55,24 +31,26 @@ Productions
 	itemlist = {item} item |
 		   {itemlist} itemlist item;
 
-        item = num time subs;
+        item = digit time subs;
                
-        time = [h1]:hours [t1]:twopoint [m1]:minutes [t2]:twopoint [s1]:seconds [c1]:comma [x1]:millisecons arrow [h2]:hours [t3]:twopoint [m2]:minutes [t4]:twopoint [s2]:seconds [c2]:comma [x2]:millisecons;
-        
-        subs = {textlist} textlist |
-	       {effect} [e1]:effect textlist [e2]:effect;
+        time = tstart arrow tend;
 
-        textlist= {text} text |
-                  {textlist} textlist text;
+	tstart = hours [t1]:twopoint minutes [t2]:twopoint seconds comma millisecons;  
 
-        effect= {text} plus text minus |
-		{slash} plus slash text minus;
+	tend = hours [t1]:twopoint minutes [t2]:twopoint seconds comma millisecons;
 
-        hours= [d1]:digit [d2]:digit;
+        subs= {text} writing |
+              {subs} writing subs;
 
-        minutes= [d3]:digit [d4]:digit;
+	writing = {font} [f1]:font text [f2]:font |
+		  {text} text |
+		  {color} open color end text close;
 
-        seconds= [d5]:digit [d6]:digit;
+        hours= digit;
 
-        millisecons= [d7]: digit [d8]:digit;
+        minutes= digit;
+
+        seconds= digit;
+
+        millisecons= digit;
 
