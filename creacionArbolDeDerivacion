@@ -9,10 +9,6 @@ try {
 
             ArrayList<Subtitulo> subtitulos = new ArrayList<>();
 
-            for (String n : vis.getNodos()){
-                System.out.println(n);
-            }
-
             for(int i=0 ; i < vis.getNodos().size() ; i+=3){
                 Subtitulo sub = new Subtitulo();
                 sub.setSecuencia(Integer.parseInt(vis.getNodos().get(i)));
