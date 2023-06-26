@@ -1,6 +1,7 @@
 package subtitulo.analysis;
 
 import subtitulo.node.ATime;
+import subtitulo.node.Subtitulo;
 import subtitulo.node.TDigit;
 import subtitulo.node.TText;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 
 public class Visitador extends DepthFirstAdapter {
 
-    ArrayList<String> nodos = new ArrayList<String>();
+    private ArrayList<String> nodos = new ArrayList<String>();
 
     @Override
     public void caseTDigit(TDigit node) {
@@ -25,7 +26,18 @@ public class Visitador extends DepthFirstAdapter {
         nodos.add(node.getText());
     }
 
-    public ArrayList<String> getNodos() {
-        return nodos;
+    public ArrayList<Subtitulo> getSubtitulos() {
+
+        ArrayList<Subtitulo> subtitulos = new ArrayList<>();
+        for(int i=0 ; i < nodos.size() ; i+=3){
+            Subtitulo sub = new Subtitulo();
+            sub.setSecuencia(Integer.parseInt(nodos.get(i)));
+            sub.setTiempoInicio(nodos.get(i+1).split(" --> ")[0]);
+            sub.setTiempoFin(nodos.get(i+1).split(" --> ")[1]);
+            sub.setSubtitulo(nodos.get(i+2));
+            subtitulos.add(sub);
+        }
+
+        return subtitulos;
     }
 }

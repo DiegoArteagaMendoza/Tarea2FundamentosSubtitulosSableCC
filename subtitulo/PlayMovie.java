@@ -1,21 +1,19 @@
 package subtitulo;
 
 import de.humatic.dsj.*;
+import subtitulo.analysis.Visitador;
+import subtitulo.lexer.Lexer;
+import subtitulo.node.Start;
+import subtitulo.node.Subtitulo;
+import subtitulo.parser.Parser;
+
+import java.awt.*;
+import java.io.FileReader;
+import java.io.PushbackReader;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.*;
-import javax.media.*;
-import java.awt.*;
-import java.io.*;
-import java.util.*;
-import subtitulo.analysis.*;
-import subtitulo.node.*;
-import subtitulo.parser.*;
-import subtitulo.lexer.*;
-import subtitulo.analysis.*;
-import subtitulo.node.*;
-import subtitulo.parser.*;
-import subtitulo.lexer.*;
+import java.util.Vector;
 
 public class PlayMovie implements java.beans.PropertyChangeListener {
 
@@ -53,6 +51,16 @@ public class PlayMovie implements java.beans.PropertyChangeListener {
      * Crear aqui el arbol de derivacion
      */
 
+    try {
+      Parser p = new Parser(new Lexer(new PushbackReader(new FileReader(""))));
+
+      Start tree = p.parse();
+
+      Visitador vis = new Visitador();
+
+      tree.apply(vis);
+      ArrayList<Subtitulo> subtitulos = vis.getSubtitulos();
+
     // Ejemplo que indica como programar el timer
     String timeio = "00:00:24,641 --> 00:00:27,031";
 
@@ -80,6 +88,10 @@ public class PlayMovie implements java.beans.PropertyChangeListener {
      * dispose() on filtergraphs they're done with themselves.
      **/
     f.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    }catch (Exception e){
+      System.out.println(e.getMessage());
+    }
+
   }
 
   public void propertyChange(java.beans.PropertyChangeEvent pe) {
