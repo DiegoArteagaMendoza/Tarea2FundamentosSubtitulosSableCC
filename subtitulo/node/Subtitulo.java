@@ -3,17 +3,15 @@ package subtitulo.node;
 public class Subtitulo {
 
     private int secuencia;
-    private String tiempoInicio;
-    private String tiempoFin;
+    private String tiempo;
     private String subtitulo;
 
     public Subtitulo() {
     }
 
-    public Subtitulo(int secuencia, String tiempoInicio, String tiempoFinal, String subtitulo) {
+    public Subtitulo(int secuencia, String tiempo, String subtitulo) {
         this.secuencia = secuencia;
-        this.tiempoInicio = tiempoInicio;
-        this.tiempoFin = tiempoFinal;
+        this.tiempo = tiempo;
         this.subtitulo = subtitulo;
     }
 
@@ -21,12 +19,8 @@ public class Subtitulo {
         return secuencia;
     }
 
-    public String getTiempoInicio() {
-        return tiempoInicio;
-    }
-
-    public String getTiempoFin() {
-        return tiempoFin;
+    public String getTiempo() {
+        return tiempo;
     }
 
     public String getSubtitulo() {
@@ -37,12 +31,8 @@ public class Subtitulo {
         this.secuencia = secuencia;
     }
 
-    public void setTiempoInicio(String tiempoInicio) {
-        this.tiempoInicio = tiempoInicio;
-    }
-
-    public void setTiempoFin(String tiempoFin) {
-        this.tiempoFin = tiempoFin;
+    public void setTiempo(String tiempo) {
+        this.tiempo = tiempo;
     }
 
     public void setSubtitulo(String subtitulo) {

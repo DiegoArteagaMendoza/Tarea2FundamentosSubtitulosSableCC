@@ -32,8 +32,7 @@ public class Visitador extends DepthFirstAdapter {
         for(int i=0 ; i < nodos.size() ; i+=3){
             Subtitulo sub = new Subtitulo();
             sub.setSecuencia(Integer.parseInt(nodos.get(i)));
-            sub.setTiempoInicio(nodos.get(i+1).split(" --> ")[0]);
-            sub.setTiempoFin(nodos.get(i+1).split(" --> ")[1]);
+            sub.setTiempo(nodos.get(i+1).replace(" ",""));
             sub.setSubtitulo(nodos.get(i+2));
             subtitulos.add(sub);
         }
