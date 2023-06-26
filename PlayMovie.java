@@ -8,6 +8,10 @@ import javax.media.*;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
+import subtitulo.analysis.*;
+import subtitulo.node.*;
+import subtitulo.parser.*;
+import subtitulo.lexer.*;
 /* incorporar los paquetes que genera sablecc
    subtitulos puede ser reemplazado por el nombre que usted utiliza
 import subtitulos.analysis.*;

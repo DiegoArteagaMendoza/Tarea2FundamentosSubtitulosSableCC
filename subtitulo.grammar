@@ -1,0 +1,56 @@
+Package subtitulo;
+
+Helpers
+  digit = ['0' .. '9'];
+  letter = [['a' .. 'z'] + ['A' .. 'Z']];
+  tilde = ('á' | 'é' | 'í' | 'ó' | 'ú' | 'Á' | 'É' | 'Í' | 'Ó' | 'Ú');
+  symbols = [['!' .. '.'] + [':' .. ';']];
+  para = (letter | 'Ñ' | 'ñ' | '¿' | '¡' | '-' | '_' | '"');
+  coloring = [['a' .. 'f'] + ['A' .. 'F']];
+  
+
+Tokens
+	digit = (digit)+;
+	blank = (' ' | 13 | 10)+;
+        arrow = '-''-''>';
+        comma= ',';
+        twopoint= ':';
+        color = (digit | coloring)+;
+        text= para (digit | tilde | para | symbols | ' ' | '?' | '¿' )*;
+	open= '<font color="#';
+	close= '</font>';
+	end= '">';
+	font = ('<i>' | '<b>' | '<u>' | '</i>' | '</b>' | '</u>');
+
+Ignored Tokens
+	blank;
+
+Productions
+	filesub = itemlist;
+
+	itemlist = {item} item |
+		   {itemlist} itemlist item;
+
+        item = digit time subs;
+               
+        time = tstart arrow tend;
+
+	tstart = hours [t1]:twopoint minutes [t2]:twopoint seconds comma millisecons;  
+
+	tend = hours [t1]:twopoint minutes [t2]:twopoint seconds comma millisecons;
+
+        subs= {text} writing |
+              {subs} writing subs;
+
+	writing = {font} [f1]:font text [f2]:font |
+		  {text} text |
+		  {color} open color end text close;
+
+        hours= digit;
+
+        minutes= digit;
+
+        seconds= digit;
+
+        millisecons= digit;
+
